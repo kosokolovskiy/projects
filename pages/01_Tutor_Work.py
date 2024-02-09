@@ -45,8 +45,8 @@ def main():
 
         For the Informatics section, a special field for answer checking was also added, so students wouldn't have to wait until the next lesson to know the right answer and could get a 'Yes' or 'No' response immediately.
 
-        **Homeworks** is of *.pdf* format from *LaTex* document. I wrote a script in Python and bash to make it possbile automatically upload the newest version
-        of it directly to the website(local machine -> google drive with publich access and github account -> pdf container in streamlit app) and give an easy access to it.
+        **Homeworks** is of *.pdf* format from *LaTex* document. I wrote a script in Python and bash to make it possible automatically upload the newest version
+        of it directly to the website(local machine -> google drive with public access and github account -> pdf container in streamlit app) and give an easy access to it.
         
         #### Access
                         
