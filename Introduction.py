@@ -4,11 +4,11 @@ import os
 import pandas as pd
 
 def main_app():
-    st.title("Welcome to Streamlit App of Konstantin Sokolovskiy's Projects")
+    st.title("Introduction")
 
 
     st.markdown('''          
-            "Welcome to my site! 
+            Welcome to my site! 
             
             My name is Konstantin Sokolovskiy. As someone on the journey to becoming a specialist in artificial intelligence, I am deeply fascinated by the power of machine learning and data analytics. 
             My journey began at Bauman Moscow State Technical University, where I studied from 2012 to 2018, focusing on gas turbine engines and unconventional 
