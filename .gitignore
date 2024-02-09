@@ -12,9 +12,6 @@ projects/my_projects/project_2/data
 projects/project_2/data
 projects/project_2/jupyter
 utils/export_credentials.sh
-utils/
-projects/
-pages/
 
 
 # C extensions
