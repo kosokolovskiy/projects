@@ -54,7 +54,7 @@ def main_project_2():
     step_analysis = st.sidebar.selectbox('Step of Analysis: ', step_analysis_lst, index=st.session_state['selection_project_2'])
 
 
-    if type_analysis != None and step_analysis != None:
+    if not type_analysis and step_analysis:
         place_now = step_analysis_lst.index(step_analysis)
 
         FUNC_DICT[step_analysis]()
