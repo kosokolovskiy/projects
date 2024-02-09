@@ -3,6 +3,20 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# My Directories
+jupyter_projects/
+projects/example_projects
+projects/my_projects
+projects/my_projects/project_2/jupyter
+projects/my_projects/project_2/data
+projects/project_2/data
+projects/project_2/jupyter
+utils/export_credentials.sh
+utils/
+projects/
+pages/
+
+
 # C extensions
 *.so
 
