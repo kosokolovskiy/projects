@@ -12,11 +12,11 @@ def imports():
 def display_csv(name, text):
     try:
         if file := get_from_s3(f'projects/Emoji Prediction/csv/{name}.csv'):
-            if f'{name}_data_project_1' not in st.session_state:
+            if f'{name}_data_project_2' not in st.session_state:
                 df = pd.read_csv(file['Body'])
-                st.session_state[f'{name}_data_project_1'] = df
+                st.session_state[f'{name}_data_project_2'] = df
         with st.expander(text):
-            st.write(st.session_state[f'{name}_data_project_1'])
+            st.write(st.session_state[f'{name}_data_project_2'])
     except Exception:
             st.error('Object File is not Found')
 
