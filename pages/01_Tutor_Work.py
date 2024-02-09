@@ -17,7 +17,7 @@ def main():
                 
         Since the time I really got into programming, I've tried to implement new things in the educational process to achieve two main goals:
 
-        - To practice the new things that I discovered 🤓;
+        - To practice the new things that I discovered 💡;
         - To automate the process of issuing homework and class assignments, as WhatsApp or Telegram screenshots are not so effective;
         - To make the educational process more attractive, interesting, and productive for my students 🤓.
 
@@ -59,6 +59,8 @@ def main():
         After all the changes that have been made, I see that students are more inclined to study now, and all my efforts were definitely not a waste of time.
 
         For me, in general, it is always fun to come up with an idea and then try to implement it, especially if it can be useful for others.
+                
+        If you are interested in technical details and implementation, you can visit my Github.
 
     ''')
 
