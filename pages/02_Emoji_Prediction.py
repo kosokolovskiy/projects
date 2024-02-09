@@ -47,7 +47,7 @@ def main_project_2():
     if 'selection_project_2' not in st.session_state:
         st.session_state['selection_project_2'] = 0
 
-    type_analysis = st.sidebar.selectbox('Type of Analysis: ', ('Pandas'), index=0)
+    type_analysis = st.sidebar.selectbox('Type of Analysis: ', ('Pandas'))
 
 
     step_analysis_lst =  ('Introduction', 'EDA', 'Model Selection', 'Conclusions')
