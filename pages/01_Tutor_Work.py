@@ -37,7 +37,7 @@ def main():
         - For *MySQL*, I used *AWS RDS* since it allows easy operation over data. Data was also transferred from the local *MySQL* server to my *RDS*.
                 
         There was a problem with images that are presented in some tasks. To make it more accessible with the help of scrapper I automatically download these images for correspondig tasks and
-        right after upload to my own *AWS S3 bucket*.
+        right after upload to my own *AWS S3 bucket* with the right name. So when one open the task, it knows which image from which place in my S3 to take.
 
         To make the work more engaging, I added a section for Statistics, or rather, simple visualizations with *matplotlib*, where students can see how many tasks are already done and how many are left. It is always fun to see not only the texts of tasks but also some plots.
 
