@@ -13,7 +13,9 @@ def main():
                 
         ***Password**: demo_user_2024Q*
                 
-        You are welcome to this section! As I mentioned before, my work for quite some time has been to be a great tutor. In this section, I want to describe how my work has evolved in recent years. Since the time I really got into programming, I've tried to implement new things in the educational process to achieve two main goals:
+        You are welcome to this section! As I mentioned before, my work for quite some time has been to be a great tutor. In this section, I want to describe how my work has evolved in recent years. 
+                
+        Since the time I really got into programming, I've tried to implement new things in the educational process to achieve two main goals:
 
         - To practice the new things that I discovered 🤓;
         - To automate the process of issuing homework and class assignments, as WhatsApp or Telegram screenshots are not so effective;
