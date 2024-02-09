@@ -9,6 +9,10 @@ def main():
                 
         [Link to Tutor Website](https://tasks-app.streamlit.app)
                 
+        *Login*: demo
+                
+        *Password*: demo_user_2024Q
+                
         You are welcome to this section! As I mentioned before, my work since quite a long time - to be a great Tutor.
         In this section I want to describe a little, how my work has evolved in recent years. Since the time I really got
         into Programming, I tried to implement new things in educational process to achieve two goals:
