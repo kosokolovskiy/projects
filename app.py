@@ -12,7 +12,7 @@ def display_photo(name):
 
 def main_app():
     st.title("Introduction")
-
+    display_photo('my_photo')
 
     st.markdown('''          
             Welcome to my website! 
@@ -24,7 +24,7 @@ def main_app():
             Since 2014, I've also been tutoring in computer science, mathematics, and physics, successfully preparing students for their final school exams. More on this can be found in the next section.
     ''')
 
-    display_photo('my_photo')
+    
 
 if __name__ == '__main__':
     main_app()
