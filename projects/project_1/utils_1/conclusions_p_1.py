@@ -24,8 +24,8 @@ def main():
     *Ways to improve*:
 
     - Using statistical models for TS Forecasting, for example, ARIMA model;
-    - Probe *LSTM* model and different its variant;
-    - Probe transofrmer model from *Hugging Face*;
+    - Test *LSTM* model and different its variant;
+    - Test transofrmer model from *Hugging Face*;
 
     
     ''')

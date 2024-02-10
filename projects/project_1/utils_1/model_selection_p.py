@@ -77,7 +77,7 @@ def title():
 
         4) Model 3: Dense with Additional Features
 
-        5) Block of Models with additional features:
+        5) Block of Models with Additional Features:
             - Ridge;
             - Lasso;
             - XGBoost;
@@ -247,6 +247,7 @@ def model_5_training():
 
 def model_5_results():
     display_csv_general('res_ML_with_features', 'Model 5 Results')
+    st.markdown('Now we see the improvement in all the Algorithms that we use')
 
 def model_5_feature_importance():
     st.markdown(
