@@ -379,7 +379,7 @@ MODEL_3 = '''
         'XGBoost': XGBRegressor(n_estimators=1_000, max_depth=2, eta=1)}
 '''
 
-MODDEL_3_TRAINING = '''
+MODEL_3_TRAINING = '''
     pred_dict = {
         'model': [],
         'regression_model': [],
@@ -460,7 +460,7 @@ MODEL_5 = '''
 '''
 
 
-MODDEL_5_TRAINING = '''
+MODEL_5_TRAINING = '''
     pred_dict = {
         'model': [],
         'regression_model': [],
