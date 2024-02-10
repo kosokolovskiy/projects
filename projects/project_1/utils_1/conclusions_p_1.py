@@ -12,8 +12,7 @@ def main():
     - Ridge
     - Lasso
     - XGBoost
-    - SVG Regressor
-    - GradBoostRegressor
+  
 
     The best results are show in the DL models, but also by *Ridge Regression*, especially with additional features. Other ML models 
     demostrated good train error, but bad test, which means that overfitting occured.
