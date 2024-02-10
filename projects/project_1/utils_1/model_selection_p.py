@@ -179,7 +179,7 @@ def model_3_training():
 
 
 def model_3_results():
-    display_csv_general('res_ML_without_features')
+    display_csv_general('res_ML_without_features', 'Model 3 Results')
 
 def model_3_feature_importance():
     st.markdown(
@@ -255,7 +255,7 @@ def model_5_training():
 
 
 def model_5_results():
-    display_csv_general('res_ML_with_features')
+    display_csv_general('res_ML_with_features', 'Model 5 Results')
 
 def model_5_feature_importance():
     st.markdown(
