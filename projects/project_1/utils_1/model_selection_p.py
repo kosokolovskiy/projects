@@ -122,6 +122,42 @@ def model_1_results_plot():
     )
     display_plot('4_preds_true_model_1', 'Model 1 Results')
 
+
+def model_2():
+    st.markdown('''
+        Now we will train our second model.
+    '''
+    )
+
+    display_code(MODEL_2, 'Model 2 Structure')
+
+def model_2_plot_loss():
+    st.markdown('''
+        Now we can take a look at plot loss curves to estimate whether we have chances to learn something more.
+        For this purpose we also use the function that was declared in the first section - *plot_loss_curves*
+    ''')
+
+    display_plot('plot_loss_model_2', 'Plot Loss Curves of Model 2')
+
+    st.markdown('It is obvious from the plot, that number of epochs is excessive. In general, we can reduce it')
+
+
+def model_2_results():
+    # st.markdown(
+    #     '''
+
+    #     '''
+    # )
+    pass
+
+def model_2_results_plot():
+    st.markdown(
+        '''
+        Let's take a look at the plot that shows comparison between real prices and predicted ones
+        '''
+    )
+    display_plot('preds_true_model_2', 'Model 2 Results')
+
 # def model_1_results():
 #     st.markdown(
 #         '''
@@ -214,6 +250,18 @@ def main():
     model_1_results()
 
     model_1_results_plot()
+
+
+
+    st.markdown('#### Model 2: Conv1D')
+
+    model_2()
+
+    model_2_plot_loss()
+
+    model_2_results()
+
+    model_2_results_plot()
 
 
 if __name__ == "__main__":
