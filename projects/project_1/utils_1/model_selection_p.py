@@ -50,7 +50,6 @@ def display_code_csv(name_code, name_csv, text, *args):
 
 
 def title():
-    st.markdown('#### Introduction')
     st.markdown('''
 
         **Now we will work with several types of models and compare the results of learning:**
@@ -73,7 +72,8 @@ def title():
     '''
     )
 
-st.markdown('#### Preprocessing')
+
+
 def preprocessing():
     st.markdown('''
         First we need to prepare our data for forecasting. We generate new features by shifting specified columns
@@ -83,9 +83,8 @@ def preprocessing():
 
     display_code_csv(MAKE_WINDOWS_LABELS, 'window_7_without_features', 'Windowed Features and Labels', 'label_without_features')
 
-st.markdown('### Modeling')
 
-st.markdown('#### Model 1: Dense')
+
 def model_1():
     st.markdown('''
         Finally, we can create our first simple model to try to predict *Close* price of the next day.
@@ -198,9 +197,15 @@ def model_1_results_plot():
 
 
 def main():
+    st.markdown('#### Introduction')
     title()
 
+    st.markdown('#### Preprocessing')
     preprocessing()
+
+    st.markdown('### Modeling')
+
+    st.markdown('#### Model 1: Dense')
 
     model_1()
 
