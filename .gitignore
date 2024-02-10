@@ -13,7 +13,7 @@ projects/project_2/data
 projects/project_2/jupyter
 utils/export_credentials.sh
 projects/04_Buttons_To_Test.py
-
+pages/04_Buttons_To_Test.py
 
 # C extensions
 *.so
