@@ -10,15 +10,15 @@ def imports():
     
 
 def display_csv(name, text):
-    try:
+    # try:
         if file := get_from_s3(f'projects/Stock_Price_analysis/csv/{name}.csv'):
             if f'{name}_data_project_1' not in st.session_state:
                 df = pd.read_csv(file['Body'], parse_dates=['Date'], index_col='Date')
                 st.session_state[f'{name}_data_project_1'] = df
         with st.expander(text):
             st.write(st.session_state[f'{name}_data_project_1'])
-    except Exception:
-            st.error('Object File is not Found')
+    # except Exception:
+    #         st.error('Object File is not Found')
 
 
 def display_plot(name, text):
