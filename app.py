@@ -4,7 +4,7 @@ import pandas as pd
 from utils.aws_funcs import get_from_s3
 
 def display_photo(name):
-    col1, col2, col3 = st.columns([1,2,1])
+    col1, col2, col3 = st.columns([1,1,1])
 
     try:
         with col2: 
