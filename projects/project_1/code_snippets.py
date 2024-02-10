@@ -8,9 +8,8 @@ import pathlib
 import os
 
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import Ridge, Lasso
-from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error, r2_score
 
 import xgboost
@@ -209,6 +208,19 @@ def make_train_test_splits(windows, labels, test_split=0.2):
     test_windows = windows[split_size:]
     test_labels = labels[split_size:]
     return train_windows, test_windows, train_labels, test_labels
+
+def add_features_to_df(df):
+    df = df.copy()
+    df['volume_shock_yes_no'] = (df['volume'].diff() / df['volume'].shift() * 100 > 10).astype(int)
+    df['volume_shock_direction'] = (df['volume'].diff() / df['volume'].shift() > 0).astype(int)
+    df['price_shock_yes_no'] = (df['close'].diff() / df['close'].shift() * 100 > 2).astype(int)
+    df['price_shock_direction'] = (df['close'].diff() / df['close'].shift() > 0).astype(int)
+
+    scaler = MinMaxScaler()
+    df['scaled_volume'] = scaler.fit_transform(df.volume.to_numpy().reshape(-1, 1))
+    df.drop('volume', axis=1, inplace=True)
+
+    return df
 '''
 
 SCRAPPER = '''
@@ -256,6 +268,36 @@ def upload_to_aws_csv(file_name):
 def upload_csv(df, csv_name):
     df.to_csv(path_local_csv + csv_name + '.csv')
     upload_to_aws_csv(csv_name)
+'''
+
+
+MACHINE_LEARNING = '''
+    def make_regression(x_train, y_train, x_test, y_test, model, model_name, verbose=True):
+
+        model.fit(x_train, y_train)
+
+        y_predict = model.predict(x_train)
+        train_error = mean_squared_error(y_train, y_predict, squared=False)
+
+        y_predict = model.predict(x_test)
+        test_error = mean_squared_error(y_test, y_predict, squared=False
+        )
+
+        y_predict = model.predict(x_train)
+        r2 = r2_score(y_train, y_predict)
+
+        if verbose:
+            print(f"----Model name = {model_name}-----")
+            print(f"Train error = {train_error}")
+            print(f"Test error = {test_error}")
+            print(f"r2_score = {r2}")
+            print("--------------------------------")
+
+        trained_model = model
+
+        return trained_model, y_predict, train_error, test_error, r2
+}
+
 '''
 
 TRAIN_TEST_SPLIT = '''
@@ -328,4 +370,128 @@ MODEL_2 = '''
                 verbose=1,
                 validation_data=(test_windows, test_labels),
                 callbacks=[callback])
+'''
+
+MODEL_3 = '''
+    regression_models = {
+        'Ridge': Ridge(),
+        'Lasso': Lasso(),
+        'XGBoost': XGBRegressor(n_estimators=1_000, max_depth=2, eta=1)}
+'''
+
+MODDEL_3_TRAINING = '''
+    pred_dict = {
+        'model': [],
+        'regression_model': [],
+        'Train Error': [],
+        'Test Error': [],
+        'R2': []}
+
+        for model_name in regression_models.keys():
+
+            trained_model, y_predict, train_error, test_error, r2 = make_regression(train_windows, 
+                                                                                    np.ravel(train_labels), 
+                                                                                    test_windows, np.ravel(test_labels), 
+                                                                                    regression_models[model_name], 
+                                                                                    model_name=model_name, 
+                                                                                    verbose=True)
+
+            pred_dict['model'].append(trained_model)
+            pred_dict["regression_model"].append(model_name)
+            pred_dict["Train Error"].append(train_error)
+            pred_dict["Test Error"].append(test_error)
+            pred_dict["R2"].append(r2)
+'''
+
+FEATURE_IMPORTANCE_WITHOUT = '''
+    model = pred_dict['model'][2]
+
+    fig, ax = plt.subplots(figsize=(15, 15)) 
+    xgboost.plot_importance(model, ax=ax)
+    ax.set_title('Feature Importance', fontsize=14) 
+    ax.set_xlabel('F score', fontsize=12)
+    ax.set_ylabel('Features', fontsize=12)  
+    ax.grid('on', which='major', linestyle='-', linewidth='0.5', color='gray') 
+    ax.tick_params(axis='both', which='major', labelsize=10)
+'''
+
+NEW_DF_WITH_FEATURES = '''
+    infy_df_features = infy_df.copy()
+    infy_df_added_features = add_features_to_df(infy_df_features)
+'''
+
+MODEL_4 = '''
+    full_windows_with_features, full_labels_with_features = make_windows_pandas(infy_df_added_features, 
+                                                                                labels=['close'], 
+                                                                                features=list(infy_df_added_features.columns),
+                                                                                window_size=WINDOW_SIZE, 
+                                                                                horizon=HORIZON)
+    train_windows_feat, test_windows_feat, train_labels_feat, test_labels_feat = make_train_test_splits(full_windows_with_features, 
+                                                                                                        full_labels_with_features, 
+                                                                                                        test_split=.2)
+    tf.random.set_seed(42)
+
+    callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+
+    model_4 = tf.keras.Sequential([
+    layers.Flatten(),
+    layers.Dense(64, activation="relu"),
+    layers.Dense(HORIZON, activation="linear")                   
+    ], name="model_4_dense") 
+
+    model_4.compile(loss="mae",
+                    optimizer=tf.keras.optimizers.Adam(0.0001),
+                    metrics=["mae"]) 
+
+    history_4 = model_4.fit(x=train_windows_feat,
+                y=train_labels_feat, 
+                epochs=200,
+                verbose=1,
+                batch_size=8,
+                validation_data=(test_windows_feat, test_labels_feat), 
+                callbacks=[callback]) 
+'''
+
+MODEL_5 = '''
+    regression_models = {
+        'Ridge': Ridge(),
+        'Lasso': Lasso(),
+        'XGBoost': XGBRegressor(n_estimators=1_000, max_depth=2, eta=1)}
+'''
+
+
+MODDEL_5_TRAINING = '''
+    pred_dict = {
+        'model': [],
+        'regression_model': [],
+        'Train Error': [],
+        'Test Error': [],
+        'R2': []}
+
+        for model_name in regression_models.keys():
+
+            trained_model, y_predict, train_error, test_error, r2 = make_regression(train_windows, 
+                                                                                    np.ravel(train_labels), 
+                                                                                    test_windows, np.ravel(test_labels), 
+                                                                                    regression_models[model_name], 
+                                                                                    model_name=model_name, 
+                                                                                    verbose=True)
+
+            pred_dict['model'].append(trained_model)
+            pred_dict["regression_model"].append(model_name)
+            pred_dict["Train Error"].append(train_error)
+            pred_dict["Test Error"].append(test_error)
+            pred_dict["R2"].append(r2)
+'''
+
+FEATURE_IMPORTANCE_WITH = '''
+    model = pred_dict['model'][2]
+
+    fig, ax = plt.subplots(figsize=(15, 15)) 
+    xgboost.plot_importance(model, ax=ax)
+    ax.set_title('Feature Importance', fontsize=14) 
+    ax.set_xlabel('F score', fontsize=12)
+    ax.set_ylabel('Features', fontsize=12)  
+    ax.grid('on', which='major', linestyle='-', linewidth='0.5', color='gray') 
+    ax.tick_params(axis='both', which='major', labelsize=10)
 '''

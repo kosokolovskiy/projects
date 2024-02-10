@@ -39,7 +39,7 @@ def display_code_plot(name_code, name_plot, text):
         st.image(file['Body'].read())
 
 def display_functions():
-    menu =  ('Visualization', 'Predictions', 'Sliding Window', 'Amazon S3','Differents')
+    menu =  ('Visualization', 'Predictions', 'Sliding Window', 'Amazon S3', 'Regression', 'Differents')
     with st.expander('Functions For The Project'):
         menu_functions = st.radio('Choose the section of functions?', menu, index=None)
         if menu_functions == '':
@@ -70,6 +70,9 @@ def display_functions():
                 '''
             )
             st.code(AMAZON_S3)
+
+        elif menu_functions == 'Regression':
+            st.code(MACHINE_LEARNING)
 
 def raw_data():
     display_csv('raw', text='Raw Data')
@@ -109,7 +112,7 @@ def main():
     first_preprocess()
 
     st.markdown('''
-    Now we can take a look at gpraphical representation of the information given to us by dataframe.
+    Now we can take a look at graphical representation of the information given to us by dataframe.
     ''')
     plot_1()
 
