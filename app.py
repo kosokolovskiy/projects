@@ -4,11 +4,11 @@ import pandas as pd
 from utils.aws_funcs import get_from_s3
 
 def display_photo(name):
-    try:
+    # try:
         if file := get_from_s3(f'/{name}.png'):
             st.image(file['Body'].read())
-    except Exception:
-            st.error('Object File is not Found')
+    # except Exception:
+    #         st.error('Object File is not Found')
 
 def main_app():
     st.title("Introduction")
