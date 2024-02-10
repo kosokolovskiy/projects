@@ -229,15 +229,6 @@ def model_4_plot_loss():
 
     st.markdown('Here we can see that stil there is place for improvement, losses and MAE are smoothly going down ')
 
-
-def model_1_results():
-    # st.markdown(
-    #     '''
-
-    #     '''
-    # )
-    pass
-
 def model_4_results_plot():
     st.markdown(
         '''
@@ -291,7 +282,6 @@ def main():
     model_1_results_plot()
 
 
-
     st.markdown('#### Model 2: Conv1D')
 
     model_2()
@@ -324,8 +314,6 @@ def main():
     model_4()
 
     model_4_plot_loss()
-
-    model_4_results()
 
     model_4_results_plot()
 
