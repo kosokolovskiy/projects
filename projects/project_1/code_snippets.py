@@ -211,6 +211,33 @@ def make_train_test_splits(windows, labels, test_split=0.2):
     return train_windows, test_windows, train_labels, test_labels
 '''
 
+SCRAPPER = '''
+    import requests
+    from bs4 import BeautifulSoup
+
+    def scrap_holidays(year):
+        url = f'https://zerodha.com/z-connect/traders-zone/holidays/trading-holidays-{year}-nse-bse-mcx'
+
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        if table := soup.find('table'):
+            holidays = []
+            for row in table.find_all('tr')[1:]:
+                columns = row.find_all('td')
+                if len(columns) > 1:
+                    date_with_year = f"{columns[2].get_text().strip()} 2015"
+                    holiday_data = {
+                        'serial_number': columns[0].get_text().strip(),
+                        'holiday_name': columns[1].get_text().strip(),
+                        'date': date_with_year
+                    }
+                    holidays.append(holiday_data)
+            holidays_df = pd.DataFrame(holidays)
+            holidays_df['date'] = pd.to_datetime(holidays_df['date'])
+            return holidays_df
+'''
+
 AMAZON_S3 = '''
 path_to_local_plots = ***
 path_local_images = 'data/images/'
@@ -278,4 +305,27 @@ history_1 = model_1.fit(x=train_windows,
             validation_data=(test_windows, test_labels), 
             callbacks=[callback],
             ) 
+'''
+
+MODEL_2 = '''
+    tf.random.set_seed(42)
+
+    callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=7, restore_best_weights=True)
+
+    model_2 = tf.keras.Sequential([
+    layers.Lambda(lambda x: tf.expand_dims(x, axis=1)), 
+    layers.Conv1D(filters=64, kernel_size=5, padding="causal", activation="relu"),
+    layers.Dense(HORIZON)
+    ], name="model_2_conv1D")
+
+    model_2.compile(loss="mae",
+                    optimizer=tf.keras.optimizers.Adam())
+
+    model_2.fit(train_windows,
+                train_labels,
+                batch_size=64, 
+                epochs=100,
+                verbose=1,
+                validation_data=(test_windows, test_labels),
+                callbacks=[callback])
 '''
