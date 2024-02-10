@@ -5,7 +5,7 @@ from utils.aws_funcs import get_from_s3
 
 def display_photo(name):
     # try:
-        if file := get_from_s3(f'/{name}.png'):
+        if file := get_from_s3(f'{name}.png'):
             st.image(file['Body'].read())
     # except Exception:
     #         st.error('Object File is not Found')
