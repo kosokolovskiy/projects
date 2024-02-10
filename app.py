@@ -3,9 +3,8 @@ import streamlit.components.v1 as stc
 import pandas as pd
 from utils.aws_funcs import get_from_s3
 
-def display_plot(name):
+def display_photo(name):
     try:
-        print(f'/{name}.png')
         if file := get_from_s3(f'/{name}.png'):
             st.image(file['Body'].read())
     except Exception:
@@ -25,7 +24,7 @@ def main_app():
             Since 2014, I've also been tutoring in computer science, mathematics, and physics, successfully preparing students for their final school exams. More on this can be found in the next section.
     ''')
 
-    display_plot('my_photo')
+    display_photo('my_photo')
 
 if __name__ == '__main__':
     main_app()
