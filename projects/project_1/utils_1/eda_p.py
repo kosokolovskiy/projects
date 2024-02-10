@@ -17,6 +17,9 @@ def display_csv(name, text):
                 st.session_state[f'{name}_data_project_1'] = df
         with st.expander(text):
             st.write(st.session_state[f'{name}_data_project_1'])
+
+
+        st.error('TRY')
     # except Exception:
     #         st.error('Object File is not Found')
 
