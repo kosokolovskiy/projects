@@ -50,6 +50,7 @@ def display_code_csv(name_code, name_csv, text, *args):
 
 
 def title():
+    st.markdown('#### Introduction')
     st.markdown('''
 
         **Now we will work with several types of models and compare the results of learning:**
@@ -72,6 +73,7 @@ def title():
     '''
     )
 
+st.markdown('#### Preprocessing')
 def preprocessing():
     st.markdown('''
         First we need to prepare our data for forecasting. We generate new features by shifting specified columns
@@ -81,6 +83,9 @@ def preprocessing():
 
     display_code_csv(MAKE_WINDOWS_LABELS, 'window_7_without_features', 'Windowed Features and Labels', 'label_without_features')
 
+st.markdown('### Modeling')
+
+st.markdown('#### Model 1: Dense')
 def model_1():
     st.markdown('''
         Finally, we can create our first simple model to try to predict *Close* price of the next day.
@@ -94,10 +99,12 @@ def model_1():
 def model_1_plot_loss():
     st.markdown('''
         Now we can take a look at plot loss curves to estimate whether we have chances to learn something more.
-        For this purpose we also use the function what was declared in the first section - *plot_loss_curves*
+        For this purpose we also use the function that was declared in the first section - *plot_loss_curves*
     ''')
 
     display_plot('3_plot_loss_model_1', 'Plot Loss Curves of Model 1')
+
+    st.markdown('It is obvious from the plot, that number of epochs is excessive. In general, we can reduce it')
 
 
 def model_1_results():
