@@ -6,13 +6,13 @@ from utils.aws_funcs import get_from_s3
 def display_photo(name):
     # try:
         if file := get_from_s3(f'{name}.png'):
-            st.image(file['Body'].read())
+            st.image(file['Body'].read(), width=200)
     # except Exception:
     #         st.error('Object File is not Found')
 
 def main_app():
     st.title("Introduction")
-    display_photo('my_photo')
+    
 
     st.markdown('''          
             Welcome to my website! 
@@ -23,7 +23,7 @@ def main_app():
             It was here that I fell in love with AI, fascinated by its capabilities and the hands-on implementation process. I try to evolve in this direction in all possble ways: read articles, write, calculate and implement by hand and so on.
             Since 2014, I've also been tutoring in computer science, mathematics, and physics, successfully preparing students for their final school exams. More on this can be found in the next section.
     ''')
-
+    display_photo('my_photo')
     
 
 if __name__ == '__main__':
