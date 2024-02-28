@@ -1,0 +1,4 @@
+min_balance = abs(df_engineered['balance'].min())
+df_engineered = df_engineered[df_engineered['balance'] != -min_balance]
+df_engineered['balance'] = df_engineered['balance'] + min_balance + 1
+df_engineered['balance'] = np.log1p(df_engineered['balance'])

@@ -1,0 +1,45 @@
+
+def count_categorical(df, column, target=0):
+    fig, ax = plt.subplots(2, 1, figsize=(17,14), dpi=300)
+    category_sizes = df[column].value_counts().reset_index()
+    category_sizes.columns = [column, 'counts']
+
+    colors = plt.cm.tab20c.colors
+    squarify.plot(sizes=category_sizes['counts'], label=category_sizes[column], alpha=0.6, color=colors, ax=ax[0])
+    ax[0].axis('off')
+    ax[0].set_title(f'Treemap of {column.capitalize()}s', pad=20)
+    ax[0].set_xlabel('Category', labelpad=20)
+    ax[0].set_ylabel('Frequency', labelpad=20);
+    ax[0].tick_params(axis='x', rotation=45);
+
+    temp_df = df.groupby([column, 'y']).size().unstack(fill_value=0)
+    colormap = plt.cm.coolwarm
+    colors = [colormap(i) for i in np.linspace(0.1, 0.85, temp_df.shape[1])]
+    temp_df.plot(kind='bar', stacked=False, ax=ax[1], color=colors)
+    ax[1].tick_params(axis='x', rotation=45)
+
+def summary_numerical(df, col, q_min, q_max, upload=1, engineered=0):
+    
+    fig, ax = plt.subplots(2, 2, figsize=(15, 8))
+
+    sns.histplot(data=df, x=col, kde=True, ax=ax[0, 0])
+
+    stats.probplot(x=df[col], dist=stats.norm, plot=ax[0, 1])
+
+    sns.boxplot(data=df, x=col, ax=ax[1, 0])
+
+    pts = df[col].quantile(q=np.arange(q_min, q_max, 0.01))
+    sns.lineplot(x=pts.index, y=pts, ax=ax[1, 1])
+
+    titles_name = [["Histogram", "QQ plot"], ["Boxplot", "Outlier"]]
+
+    for i, j in product(range(2), repeat=2):
+        ax[i, j].set_title(titles_name[i][j].capitalize(), pad=20)
+
+    plt.suptitle(f"Distribution of: {col.capitalize()}", fontsize=15)
+    plt.tight_layout()
+    if upload:
+        if engineered:
+            upload_plot(f'distribution_{col}_engineered')
+        else:
+            upload_plot(f'distribution_{col}')

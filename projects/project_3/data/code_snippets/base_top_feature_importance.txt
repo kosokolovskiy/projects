@@ -1,0 +1,13 @@
+
+feature_importance = trained_base_models['XGBoost'].get_booster().get_score(importance_type='weight')
+
+sorted_importance = sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)
+
+fig = plt.figure(figsize=(15, 7), dpi=200)
+x = np.arange(len(sorted_importance))
+y = [elem[1] for elem in sorted_importance]
+plt.plot(x, y, marker='o');
+plt.xlabel('Feature Number', labelpad=20)
+plt.ylabel('Feature Importance', labelpad=20)
+plt.grid(True)
+upload_plot('base_feature_importance_1')

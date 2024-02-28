@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 # My Directories
+.streamlit/secrets.toml
 jupyter_projects/
 projects/example_projects
 projects/my_projects
@@ -12,6 +13,7 @@ projects/my_projects/project_2/data
 projects/project_2/data
 projects/project_2/jupyter
 utils/export_credentials.sh
+projects/project_3/jupyter
 
 
 # C extensions

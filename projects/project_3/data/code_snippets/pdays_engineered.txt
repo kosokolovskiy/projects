@@ -1,0 +1,10 @@
+def define_pdays(x):
+    if x == -1:
+        return 'no'
+    elif -1 < x <= 200:
+        return '< 200'
+    else:
+        return '>= 200'
+
+df_engineered['pdays'] = df_engineered['pdays'].apply(define_pdays)
+_, p_value, _, _ = cat_to_target(df_engineered, 'pdays')

@@ -1,0 +1,6 @@
+n_folds = 5
+s_fold = StratifiedKFold(
+    n_splits=n_folds,
+    shuffle=True,
+    random_state=42
+)

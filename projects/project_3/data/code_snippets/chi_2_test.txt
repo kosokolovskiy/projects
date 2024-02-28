@@ -1,0 +1,6 @@
+p_result = pd.DataFrame({
+    'category': ['job', 'marital', 'education', 'default', 'housing', 'loan', 'contact','month', 'poutcome'],
+    'p_value': [p_job, p_marital, p_education, p_default, p_housing, p_loan, p_contact, p_month, p_poutcome], 
+    })
+p_result['is_it'] = p_result['p_value'].apply(lambda x: 1 if x < 0.05 else 0)
+p_result

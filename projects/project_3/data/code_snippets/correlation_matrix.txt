@@ -1,0 +1,15 @@
+fig, ax = plt.subplots(figsize = (5, 5), dpi=200)
+
+sns.heatmap(
+    data=numerical_df.corr(),
+    vmin=-1,
+    vmax=1,
+    linecolor="white",
+    linewidth=0.5,
+    annot=True,
+    fmt=".2f",
+    ax=ax
+)
+plt.xticks(rotation=45)
+plt.title('Correlations'); 
+upload_plot('correlation_matrix')

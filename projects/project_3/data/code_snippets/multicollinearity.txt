@@ -1,0 +1,7 @@
+vif_data = pd.DataFrame()
+vif_data["feature"] = numerical_df.columns
+
+vif_data["VIF"] = [variance_inflation_factor(numerical_df.values, i) 
+                   for i in range(numerical_df.shape[1])]
+
+vif_data

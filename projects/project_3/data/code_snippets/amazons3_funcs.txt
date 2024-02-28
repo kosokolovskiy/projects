@@ -1,0 +1,16 @@
+
+path_to_local_plots = '/Users/konstantinsokolovskiy/Desktop/My_Big_Project/final/projects/projects/project_3/data/png/'
+def upload_to_aws_png(file_name):
+    upload_to_s3(f'{path_to_local_plots}{file_name}.png', f'projects/Bank_Marketing_Classification_Task/png/{file_name}.png')
+
+def upload_plot(plot_name):
+    plt.savefig(f'{path_to_local_plots}{plot_name}.png', dpi=300)
+    upload_to_aws_png(plot_name)
+
+path_to_local_csv = '/Users/konstantinsokolovskiy/Desktop/My_Big_Project/final/projects/projects/project_3/data/csv/'
+def upload_to_aws_csv(file_name):
+    upload_to_s3(f'{path_to_local_csv}{file_name}.csv', f'projects/Bank_Marketing_Classification_Task/csv/{file_name}.csv')
+
+def upload_csv(df, csv_name, index=False):
+    df.to_csv(f'{path_to_local_csv}{csv_name}.csv', index=index)
+    upload_to_aws_csv(csv_name)

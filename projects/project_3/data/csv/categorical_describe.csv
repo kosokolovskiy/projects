@@ -1,0 +1,5 @@
+,job,marital,education,default,housing,loan,contact,month,poutcome,y
+count,4521,4521,4521,4521,4521,4521,4521,4521,4521,4521
+unique,12,3,4,2,2,2,3,12,4,2
+top,management,married,secondary,no,yes,no,cellular,may,unknown,no
+freq,969,2797,2306,4445,2559,3830,2896,1398,3705,4000

@@ -1,0 +1,3 @@
+path_data = pathlib.Path('data/bank_data.csv')
+df = pd.read_csv(path_data.__str__())
+df.head(20)

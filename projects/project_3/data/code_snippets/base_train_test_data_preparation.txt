@@ -1,0 +1,22 @@
+X_train_base, X_test_base, y_train_base, y_test_base = train_test_split(df_for_base.drop('y', axis=1), 
+                                                    df_for_base['y'], 
+                                                    test_size=0.2,
+                                                    random_state=42,
+                                                    stratify=df_for_base['y'])
+
+
+X_train_base.reset_index(drop=True, inplace=True)
+X_test_base.reset_index(drop=True, inplace=True)
+
+y_train_base = y_train_base.map({'no': 0, 'yes': 1}).reset_index(drop=True)
+y_test_base = y_test_base.map({'no': 0, 'yes': 1}).reset_index(drop=True)
+
+X_train_base_final = pd.get_dummies(
+        X_train_base,
+        columns=categorical_df.columns[:-1],
+        drop_first=True)
+
+X_test_base_final = pd.get_dummies(
+        X_test_base,
+        columns=categorical_df.columns[:-1],
+        drop_first=True)

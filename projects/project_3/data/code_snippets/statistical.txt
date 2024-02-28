@@ -1,0 +1,5 @@
+
+def cat_to_target(df, cat, target='y'):
+    temp = pd.crosstab(df[cat], df[target])
+    chi2, p_value, dof, expected = chi2_contingency(temp)
+    return chi2, p_value, dof, expected

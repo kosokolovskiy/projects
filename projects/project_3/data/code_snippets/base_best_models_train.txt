@@ -1,0 +1,13 @@
+base_models_best = {
+    'Logistic Regregression': LogisticRegression(**best_params['Logistic Regregression']),
+    'Random Forest': RandomForestClassifier(**best_params['Random Forest']),
+    'XGBoost': XGBClassifier(**best_params['XGBoost']),
+}
+
+base_models_best_results_train, trained_base_models_best = train_models(
+    X_train_base_final[top_features], 
+    y_train_base, 
+    base_models_best
+    )
+
+base_models_best_results_test = test_models(X_test_base_final[top_features], y_test_base, base_models_best)
