@@ -1,8 +1,13 @@
 import re
 
 def from_file(file_name):
-    with open (f'projects/project_3/data/code_snippets/{file_name}.txt') as f:
-        s = f.readlines()
+    try:
+        with open (f'projects/project_3/data/code_snippets/{file_name}.txt') as f:
+            s = f.readlines()
+    except:
+        with open (f'projects/projects/project_3/data/code_snippets/{file_name}.txt') as f:
+            s = f.readlines()
+
 
     return ''.join(s)
 
