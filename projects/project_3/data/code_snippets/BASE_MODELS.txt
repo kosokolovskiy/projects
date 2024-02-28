@@ -1,6 +1,0 @@
-base_models = {
-    'Logistic Regregression': LogisticRegression(max_iter=5000,),
-    'Random Forest': RandomForestClassifier(),
-    'XGBoost': XGBClassifier(),
-    'SVC': SVC()
-}
