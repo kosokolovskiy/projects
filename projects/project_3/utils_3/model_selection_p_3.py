@@ -180,7 +180,7 @@ def pdays_engineering():
     display_code(PDAYS_ENGINEERED, 'Pdays Engineering')
     
 def previous_engineering():
-    display_code(previous_engineered, 'Previous Engineering')
+    display_code(PREVIOUS_ENGINEERED, 'Previous Engineering')
 
 
 
