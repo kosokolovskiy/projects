@@ -102,7 +102,7 @@
   "Rule4C995B7F": {
    "Type": "AWS::Events::Rule",
    "Properties": {
-    "ScheduleExpression": "rate(12 hours)",
+    "ScheduleExpression": "rate(30 days)",
     "State": "ENABLED",
     "Targets": [
      {

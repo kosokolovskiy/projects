@@ -189,7 +189,7 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Events::Rule",
                   "aws:cdk:cloudformation:props": {
-                    "scheduleExpression": "rate(12 hours)",
+                    "scheduleExpression": "rate(30 days)",
                     "state": "ENABLED",
                     "targets": [
                       {

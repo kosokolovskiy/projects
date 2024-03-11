@@ -15,22 +15,31 @@ import time
 
 import streamlit as st
 
-from aws.aws_funcs import upload_to_s3, folder_exists_in_s3, check_file_exists, download_from_s3
+from projects.project_4.utils.aws.aws_funcs import upload_to_s3, folder_exists_in_s3, check_file_exists_s3, download_from_s3
+from projects.project_4.utils.validation_youtube_video import extract_video_id
 
 class File_Proccessor:
     def __init__(self, link, video_name, language):
         self.link = link
         self.video_name = video_name
         self.language = language
-        self.transcript = None
+        self._transcript = '' 
+        self.unique_video_id = extract_video_id(link)
 
         self.app_name = 'summarizer_app'
 
         self.extension_video = 'mp4'
         self.extension_audio = 'mp3'
-        self.where_to_store_video = f'{self.app_name}/{self.video_name}/videos/{self.video_name}.{self.extension_video}'
-        self.where_to_store_audio = f'{self.app_name}/{self.video_name}/audios/{self.video_name}.{self.extension_audio}'
+        self.where_to_store_video = f'{self.app_name}/{self.unique_video_id}/videos/{self.video_name}.{self.extension_video}'
+        self.where_to_store_audio = f'{self.app_name}/{self.unique_video_id}/audios/{self.video_name}.{self.extension_audio}'
 
+
+    @property
+    def transcript(self):
+        if self._transcript:
+            st.markdown(self._transcript)
+            return self._transcript
+        st.error('No transcript is available now')
 
     def video_from_youtube(self):
         try:
@@ -39,8 +48,8 @@ class File_Proccessor:
             stream = youtube_obj.streams.filter(progressive=True, file_extension=self.extension_video).order_by('resolution').desc().first()
 
             if folder_exists_in_s3(
-                f'{self.app_name}/{self.video_name}'
-            ) and check_file_exists(self.where_to_store_video):
+                f'{self.app_name}/{self.unique_video_id}'
+            ) and check_file_exists_s3(self.where_to_store_video):
                 print('Folder or File already in S3')
             elif stream:
                 file_path_to_upload = stream.download(output_path='/tmp')
@@ -48,13 +57,13 @@ class File_Proccessor:
             else:
                 return None
         except Exception as e:
-            # st.error(f'Error downloading video: {e}')
+            st.error(f'Error downloading video: {e}')
             print('ERROR')
             print(f'Error downloading video: {e}')
             return None
 
     def video_to_audio(self):  # sourcery skip: extract-method
-        tmp_dir = Path(f'/tmp/{self.video_name}')
+        tmp_dir = Path(f'/tmp/{self.unique_video_id}')
         tmp_dir.mkdir(exist_ok=True)
 
         video_local_path = tmp_dir / f"{self.video_name}.{self.extension_video}"
@@ -65,21 +74,25 @@ class File_Proccessor:
                 print(f"Downloading video '{self.where_to_store_video}' from S3 to '{video_local_path}'")
                 download_from_s3(self.where_to_store_video, str(video_local_path))
 
-            print(f"Extracting audio from video '{video_local_path}'")
-            video = VideoFileClip(str(video_local_path))
-            video.audio.write_audiofile(str(audio_local_path))
-            print(f"Extracted audio to '{audio_local_path}' successfully.")
+            if not audio_local_path.exists():
+                print(f"Extracting audio from video '{video_local_path}'")
+                video = VideoFileClip(str(video_local_path))
+                video.audio.write_audiofile(str(audio_local_path))
+                print(f"Extracted audio to '{audio_local_path}' successfully.")
 
-            print(f"Uploading audio '{audio_local_path}' to S3 at '{self.where_to_store_audio}'")
-            upload_to_s3(str(audio_local_path), self.where_to_store_audio)
-            print("Audio uploaded successfully.")
+            if not check_file_exists_s3(f'{self.where_to_store_audio}'):
+                print(f"Uploading audio '{audio_local_path}' to S3 at '{self.where_to_store_audio}'")
+                upload_to_s3(str(audio_local_path), self.where_to_store_audio)
+                print("Audio uploaded successfully.")
+            else:
+                print('Audio is already in S3')
             
         except Exception as e:
             print(f"Error processing video to audio: {e}")
 
         
     def segment_and_transcribe_audio(self):
-        tmp_dir = Path(f'/tmp/{self.video_name}')
+        tmp_dir = Path(f'/tmp/{self.unique_video_id}')
         full_audio_local_path = tmp_dir / f"{self.video_name}.{self.extension_audio}"
 
         try:
@@ -88,23 +101,26 @@ class File_Proccessor:
                 download_from_s3(self.where_to_store_audio, str(full_audio_local_path))
 
             audio = AudioSegment.from_mp3(str(full_audio_local_path))
-            part_length = 60 * 1000 * 10  # 10 minutes in milliseconds
+            part_length = 60 * 1000 * 10  
 
             for i, part_start in enumerate(range(0, len(audio), part_length), 1):
                 part_end = part_start + part_length
                 part = audio[part_start:part_end]
 
                 part_filename = tmp_dir / f'audio_{self.video_name}_part_{i}.mp3'
-                part.export(part_filename, format='mp3')
+                if not part_filename.exists():
+                    part.export(part_filename, format='mp3')
 
-                part_s3_path = f'{self.app_name}/{self.video_name}/audios/parts/audio_{self.video_name}_part_{i}.mp3'
-                upload_to_s3(str(part_filename), part_s3_path)
+                part_s3_path = f'{self.app_name}/{self.unique_video_id}/audios/parts/audio_{self.video_name}_part_{i}.mp3'
+                if not check_file_exists_s3(part_s3_path):
+                    upload_to_s3(str(part_filename), part_s3_path)
+                else:
+                    print(f'{part_s3_path} already exists in S3')
 
-                print(f'If Before PART {i}')
                 transcription_local_path = tmp_dir / f'text_{self.video_name}_part_{i}.txt'
-                transcription_s3_path = f'{self.app_name}/{self.video_name}/texts/parts/text_{self.video_name}_part_{i}.txt'
+                transcription_s3_path = f'{self.app_name}/{self.unique_video_id}/texts/parts/text_{self.video_name}_part_{i}.txt'
 
-                if check_file_exists(transcription_s3_path):
+                if check_file_exists_s3(transcription_s3_path):
                     print('Transcription already exists')
 
                 elif transcript_text := asyncio.run(
@@ -125,7 +141,7 @@ class File_Proccessor:
             print(f"Error during processing: {e}")
 
     def combine_transcription_parts(self):
-        tmp_dir = Path(f'/tmp/{self.video_name}')
+        tmp_dir = Path(f'/tmp/{self.unique_video_id}')
         count = 1
         for _, _, files in os.walk(tmp_dir.__str__()):
             for one_file in sorted(files):
@@ -136,10 +152,11 @@ class File_Proccessor:
                     mode = 'w' if count == 1 else 'a'
                     with open(str(tmp_dir / f'{self.video_name}_full.txt'), mode) as file:
                         file.write(temp)
+                        self._transcript += temp
                     count += 1
 
-        transcription_s3_path_full = f'{self.app_name}/{self.video_name}/texts/text_{self.video_name}_full.txt'
-        if check_file_exists(transcription_s3_path_full):
+        transcription_s3_path_full = f'{self.app_name}/{self.unique_video_id}/texts/text_{self.video_name}_full.txt'
+        if check_file_exists_s3(transcription_s3_path_full):
             print('Full Transcript is already on S3')
         else:
             upload_to_s3(str(tmp_dir / f'{self.video_name}_full.txt'), transcription_s3_path_full)
@@ -150,7 +167,7 @@ class File_Proccessor:
             time.sleep(1)
 
     async def get_transcript(self, audio_file_path: str, text_for_waiting_user: str) -> Optional[str]:
-        client = OpenAI(api_key="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")
+        client = OpenAI(api_key=st.secrets['OPENAI_KEY'])
         stop_event = threading.Event()
         transcript = None
         async def transcribe_audio() -> None:
@@ -164,7 +181,6 @@ class File_Proccessor:
                     )
                     transcript = response.text
             except Exception as e:
-                # st.error(e)
                 print('ERROR')
             finally:
                 stop_event.set()
@@ -177,9 +193,7 @@ class File_Proccessor:
         await asyncio.create_task(transcribe_audio())
 
         draw_thread.join()
-        print(f'FROM get_transcript {transcript}')
         return transcript
-
 
 
     def pipeline(self):

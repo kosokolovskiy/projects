@@ -6,14 +6,12 @@ from datetime import timedelta, datetime
 from botocore.exceptions import NoCredentialsError
 
 from datetime import timezone
-S3_BUCKET_NAME_PROJECTS = "kosokolovsky-projects"
-AWS_ACCESS_KEY_PROJECTS = "AKIA4CIC65A5GQ67QQVD"
-AWS_SECRET_KEY_PROJECTS = "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"
-STREAMLIT_S3_BUCKET_NAME_PROJECTS = "kosokolovsky-projects"
-STREAMLIT_AWS_ACCESS_KEY_PROJECTS = "AKIA4CIC65A5GQ67QQVD"
-STREAMLIT_AWS_SECRET_KEY_PROJECTS = "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"
-
-
+S3_BUCKET_NAME_PROJECTS = st.secrets['S3_BUCKET_NAME_PROJECTS']
+AWS_ACCESS_KEY_PROJECTS = st.secrets['AWS_ACCESS_KEY_PROJECTS']
+AWS_SECRET_KEY_PROJECTS = st.secrets['AWS_SECRET_KEY_PROJECTS']
+STREAMLIT_S3_BUCKET_NAME_PROJECTS = st.secrets['STREAMLIT_S3_BUCKET_NAME_PROJECTS']
+STREAMLIT_AWS_ACCESS_KEY_PROJECTS = st.secrets['STREAMLIT_AWS_ACCESS_KEY_PROJECTS']
+STREAMLIT_AWS_SECRET_KEY_PROJECTS = st.secrets['STREAMLIT_AWS_SECRET_KEY_PROJECTS']
 
 
 def upload_to_s3(file_path, object_path, deletion_time=120):
@@ -47,7 +45,7 @@ def folder_exists_in_s3(folder_prefix):
     
     return 'Contents' in response
 
-def check_file_exists(object_name):
+def check_file_exists_s3(object_name):
     s3_client = boto3.client('s3')
     try:
         s3_client.head_object(Bucket=S3_BUCKET_NAME_PROJECTS, Key=object_name)
@@ -136,21 +134,3 @@ def delete_object_from_s3(object_key):
         print('Credentials not available')
     except Exception as e:
         print(f'An error occurred: {e}')
-
-if __name__ == '__main__':
-    
-    S3_BUCKET_NAME_PROJECTS = "kosokolovsky-projects"
-    AWS_ACCESS_KEY_PROJECTS = "AKIA4CIC65A5GQ67QQVD"
-    AWS_SECRET_KEY_PROJECTS = "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"
-    STREAMLIT_S3_BUCKET_NAME_PROJECTS = "kosokolovsky-projects"
-    STREAMLIT_AWS_ACCESS_KEY_PROJECTS = "AKIA4CIC65A5GQ67QQVD"
-    STREAMLIT_AWS_SECRET_KEY_PROJECTS = "gj++POiuvESqe6/Crd7HggO+edVj9ojmCVDbTkhI"
-
-    # upload_to_s3('/Users/konstantinsokolovskiy/Desktop/My_Big_Project/projects/my_projects/Example_Pyspark/data/INFY_2010_2024.csv', 'projects/Stock_Price_analysis/INFY_2010_2024.csv')
-    # download_from_s3('test_folder/test_data.csv', 'from_s3.csv')
-    # delete_object_from_s3('test_data.csv')
-    # delete_folder_from_s3('test_folder')
-
-
-    
-

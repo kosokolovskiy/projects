@@ -1,35 +1,3 @@
-# from aws_cdk import App, Stack, Duration
-# from constructs import Construct
-# from aws_cdk import aws_lambda as _lambda
-# from aws_cdk import aws_events as events
-# from aws_cdk import aws_events_targets as targets
-
-
-# class S3CleanupStack(Stack):
-#     def __init__(self, scope: Construct, construct_id: str, **kwargs):
-#         super().__init__(scope, construct_id, **kwargs)
-
-#         # Lambda Function
-#         cleanup_lambda = _lambda.Function(
-#             self, "S3CleanupLambda",
-#             runtime=_lambda.Runtime.PYTHON_3_9,
-#             handler="lambda_function.lambda_handler",  # Assuming your file is named lambda_function.py
-#             code=_lambda.Code.from_asset('lambda_function'),  # Adjust the path as necessary
-#         )
-
-#         # CloudWatch Event Rule to trigger Lambda every hour
-#         rule = events.Rule(
-#             self, "Rule",
-#             schedule=events.Schedule.rate(Duration.hours(1)),
-#         )
-#         rule.add_target(targets.LambdaFunction(cleanup_lambda))
-
-# app = App()
-# S3CleanupStack(app, "S3CleanupStack")
-# app.synth()
-
-
-
 from aws_cdk import App, Stack, Duration
 from constructs import Construct
 from aws_cdk import aws_lambda as lambda_
@@ -76,7 +44,7 @@ class S3CleanupStack(Stack):
 
         rule = events.Rule(
             self, "Rule",
-            schedule=events.Schedule.rate(Duration.hours(12)),
+            schedule=events.Schedule.rate(Duration.days(30)),
         )
         rule.add_target(targets.LambdaFunction(cleanup_lambda))
 
