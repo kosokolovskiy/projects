@@ -21,6 +21,7 @@ def cached_video_check(url):
 def process_video(url, video_name, language):
     obj = File_Proccessor(url, video_name, language)
     obj.pipeline()
+    st.info(obj.transcript)
     return obj.transcript
 
 # @st.cache(allow_output_mutation=True, show_spinner=True, hash_funcs={"Summarizer": id})
