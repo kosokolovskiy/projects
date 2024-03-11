@@ -13,10 +13,14 @@ LANGUAGES_D = {
 
 @st.cache_data(persist='disk', show_spinner=True)
 def process_video(url, video_name, language):
-    obj = File_Proccessor(url, video_name, language)
-    obj.pipeline()
-    st.info(obj.transcript)
-    return obj.transcript
+    if "prepared_audio" not in st.session_state:
+        obj = File_Proccessor(url, video_name, language)
+        st.session_state.prepared_audio = obj
+    
+    st.info('HERE')
+    st.session_state.prepared_audio.pipeline()
+    st.info(st.session_state.prepared_audio.transcript)
+    return st.session_state.prepared_audio.transcript
 
 @st.cache_data(persist='disk', show_spinner=True)
 def summarize_video(url, video_name):
@@ -105,8 +109,6 @@ def main_4():
         video_name = st.text_input('Enter Video Name:', value=st.session_state.get('video_name', ''))
         st.session_state['video_name'] = video_name
 
-        if 'language' not in st.session_state:
-            st.session_state.language = list(LANGUAGES_D.keys())[0]
 
         language = st.selectbox(label='Choose the language of the video:', options=list(LANGUAGES_D.keys()), index=None)
         st.session_state.language = language
