@@ -33,22 +33,9 @@ class File_Proccessor:
         self.where_to_store_video = f'{self.app_name}/{self.unique_video_id}/videos/{self.video_name}.{self.extension_video}'
         self.where_to_store_audio = f'{self.app_name}/{self.unique_video_id}/audios/{self.video_name}.{self.extension_audio}'
         # st.info(self.where_to_store_audio)
+        self.temp_dir = Path('/mount/src/projects')
+        self.info(list(self.temp_dir.iterdir()))
 
-
-        # Get the current working directory
-        current_dir = Path.cwd()
-
-        # Navigate to the grand-grandparent directory
-        grand_grandparent_dir = current_dir.parent.parent
-
-        # List the contents of the grand-grandparent directory
-        contents = list(grand_grandparent_dir.iterdir())
-
-        st.info(contents)
-
-        # Print the contents
-        for item in contents:
-            print(item)
 
 
     @property
@@ -80,7 +67,9 @@ class File_Proccessor:
             return None
 
     def video_to_audio(self):  # sourcery skip: extract-method
-        tmp_dir = Path(f'/tmp/{self.unique_video_id}')
+
+        # tmp_dir = Path(f'/tmp/{self.unique_video_id}')
+        tmp_dir = self.temp_dir / self.unique_video_id 
         tmp_dir.mkdir(exist_ok=True)
 
         video_local_path = tmp_dir / f"{self.video_name}.{self.extension_video}"
@@ -109,7 +98,8 @@ class File_Proccessor:
 
         
     def segment_and_transcribe_audio(self):
-        tmp_dir = Path(f'/tmp/{self.unique_video_id}')
+        # tmp_dir = Path(f'/tmp/{self.unique_video_id}')
+        tmp_dir = self.temp_dir / self.unique_video_id 
         full_audio_local_path = tmp_dir / f"{self.video_name}.{self.extension_audio}"
 
         try:
@@ -158,7 +148,8 @@ class File_Proccessor:
             print(f"Error during processing: {e}")
 
     def combine_transcription_parts(self):
-        tmp_dir = Path(f'/tmp/{self.unique_video_id}')
+        # tmp_dir = Path(f'/tmp/{self.unique_video_id}')
+        tmp_dir = self.temp_dir / self.unique_video_id 
         count = 1
         for _, _, files in os.walk(tmp_dir.__str__()):
             for one_file in sorted(files):
