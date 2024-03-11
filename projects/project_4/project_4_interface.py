@@ -16,7 +16,6 @@ def process_video(url, video_name, language):
     if "prepared_audio" not in st.session_state:
         st.session_state['prepared_audio'] = File_Proccessor(url, video_name, language)
     
-    st.info('HERE')
     st.session_state['prepared_audio'].pipeline()
     st.info(st.session_state['prepared_audio'].transcript)
     st.info(st.session_state['prepared_audio'].__dict__())
