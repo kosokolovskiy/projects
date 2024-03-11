@@ -83,9 +83,10 @@ def main_4():
         language = st.selectbox(label='Choose the language of video:', options=LANGUAGES_D.keys(), index=None)
         st.session_state.language = language
 
-        get_trascript_widget(url)
 
-        get_summary(url)
+        if video_name and language:
+            get_trascript_widget(url)
+            get_summary(url)
 
         
 
