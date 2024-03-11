@@ -11,18 +11,18 @@ LANGUAGES_D = {
             'Deutsch': 'de'
         }
 
-@st.cache_data(persist='disk', show_spinner=True)
+# @st.cache_data(persist='disk', show_spinner=True)
 def process_video(url, video_name, language):
     if "prepared_audio" not in st.session_state:
-        obj = File_Proccessor(url, video_name, language)
-        st.session_state.prepared_audio = obj
+        st.session_state['prepared_audio'] = File_Proccessor(url, video_name, language)
     
     st.info('HERE')
-    st.session_state.prepared_audio.pipeline()
-    st.info(st.session_state.prepared_audio.transcript)
+    st.session_state['prepared_audio'].pipeline()
+    st.info(st.session_state['prepared_audio'].transcript)
+    st.info(st.session_state['prepared_audio'])
     return st.session_state.prepared_audio.transcript
 
-@st.cache_data(persist='disk', show_spinner=True)
+# @st.cache_data(persist='disk', show_spinner=True)
 def summarize_video(url, video_name):
     obj = Summarizer(extract_video_id(url), video_name)
     obj.summarizer_open_ai()
