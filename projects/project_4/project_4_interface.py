@@ -11,6 +11,23 @@ LANGUAGES_D = {
             'Deutsch': 'de'
         }
 
+@st.cache(show_spinner=True)
+def cached_video_check(url):
+    return check_youtube_video_exists(url)
+
+# Assuming File_Processor and Summarizer are classes you've defined for handling the download, transcription, and summarization.
+@st.cache(allow_output_mutation=True, show_spinner=True, hash_funcs={"File_Processor": id, "Summarizer": id})
+def process_video(url, video_name, language):
+    obj = File_Proccessor(url, video_name, language)
+    obj.pipeline()
+    return obj
+
+@st.cache(allow_output_mutation=True, show_spinner=True, hash_funcs={"Summarizer": id})
+def summarize_video(url, video_name):
+    obj = Summarizer(extract_video_id(url), video_name)
+    obj.summarizer_open_ai()
+    return obj
+
 def link_widget():
 
     st.session_state.url = st.text_input('Enter YouTube Link')
@@ -38,56 +55,83 @@ def link_widget():
     return 0
 
 
-def get_trascript_widget(url):
-    if st.session_state.language and st.session_state['video_name']:
-            obj = File_Proccessor(url, st.session_state['video_name'], LANGUAGES_D[st.session_state.language])
-            obj.pipeline()
-            with st.expander('Transcript Text'):
-                st.markdown(obj.transcript)
-                st.download_button(label="Download Text",
-                                    data=obj.transcript,
-                                    file_name=f"transcript_{obj.video_name}.txt",
-                                    mime="text/plain"
-                                )
+# def get_trascript_widget(url):
+#     if st.session_state.language and st.session_state['video_name']:
+#             obj = File_Proccessor(url, st.session_state['video_name'], LANGUAGES_D[st.session_state.language])
+#             obj.pipeline()
+#             with st.expander('Transcript Text'):
+#                 st.markdown(obj.transcript)
+#                 st.download_button(label="Download Text",
+#                                     data=obj.transcript,
+#                                     file_name=f"transcript_{obj.video_name}.txt",
+#                                     mime="text/plain"
+#                                 )
 
 
-def get_summary(url):
-    obj = Summarizer(extract_video_id(url), st.session_state['video_name'])
-    obj.summarizer_open_ai()
-    with st.expander('Summary'):
-                st.markdown(obj.summary_openai)
-                st.download_button(label="Download Summary",
-                                    data=obj.summary_openai,
-                                    file_name=f"summary_{obj.video_name}.txt",
-                                    mime="text/plain"
-                                )
+# def get_summary(url):
+#     obj = Summarizer(extract_video_id(url), st.session_state['video_name'])
+#     obj.summarizer_open_ai()
+#     with st.expander('Summary'):
+#                 st.markdown(obj.summary_openai)
+#                 st.download_button(label="Download Summary",
+#                                     data=obj.summary_openai,
+#                                     file_name=f"summary_{obj.video_name}.txt",
+#                                     mime="text/plain"
+#                                 )
 
 
 
 def main_4():
+    # st.markdown('''
+    #     This app allows you to provide the link to YouTube video and obtain the transcript for it. You are welcome to to get transcript for the video up to 10 minutes!
+    # ''')
+
+
+
+    # if url := link_widget():
+    #     # st.info(extract_video_id(url))
+    #     video_name = st.text_input('Enter Video Name: ', value=st.session_state.get('video_name', ''))
+    #     st.session_state['video_name'] = video_name  
+
+
+    #     if 'language' not in st.session_state:
+    #         st.session_state.language = list(LANGUAGES_D.keys())[0]
+
+    #     language = st.selectbox(label='Choose the language of video:', options=LANGUAGES_D.keys(), index=None)
+    #     st.session_state.language = language
+
+
     st.markdown('''
-        This app allows you to provide the link to YouTube video and obtain the transcript for it. You are welcome to to get transcript for the video up to 10 minutes!
+        This app allows you to provide the link to a YouTube video and obtain the transcript for it. You are welcome to get the transcript for videos up to 10 minutes long!
     ''')
 
-    
-
     if url := link_widget():
-        # st.info(extract_video_id(url))
-        video_name = st.text_input('Enter Video Name: ', value=st.session_state.get('video_name', ''))
-        st.session_state['video_name'] = video_name  
-        
-        
+        video_name = st.text_input('Enter Video Name:', value=st.session_state.get('video_name', ''))
+        st.session_state['video_name'] = video_name
+
         if 'language' not in st.session_state:
             st.session_state.language = list(LANGUAGES_D.keys())[0]
-        
-        language = st.selectbox(label='Choose the language of video:', options=LANGUAGES_D.keys(), index=None)
+
+        language = st.selectbox(label='Choose the language of the video:', options=list(LANGUAGES_D.keys()), index=list(LANGUAGES_D.keys()).index(st.session_state.language))
         st.session_state.language = language
 
+        if video_name and language:
+            obj = process_video(url, video_name, LANGUAGES_D[language])
+            with st.expander('Transcript Text'):
+                st.markdown(obj.transcript)
+                st.download_button(label="Download Text",
+                                   data=obj.transcript,
+                                   file_name=f"transcript_{obj.video_name}.txt",
+                                   mime="text/plain")
 
-        
-        # if video_name and language:
-        #     get_trascript_widget(url)
-        #     get_summary(url)
+            # If summarization is needed
+            # obj_summary = summarize_video(url, video_name)
+            # with st.expander('Summary'):
+            #     st.markdown(obj_summary.summary_openai)
+            #     st.download_button(label="Download Summary",
+            #                        data=obj_summary.summary_openai,
+            #                        file_name=f"summary_{obj.video_name}.txt",
+            #                        mime="text/plain")
 
         
 
