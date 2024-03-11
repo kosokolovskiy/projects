@@ -35,6 +35,22 @@ class File_Proccessor:
         # st.info(self.where_to_store_audio)
 
 
+        # Get the current working directory
+        current_dir = Path.cwd()
+
+        # Navigate to the grand-grandparent directory
+        grand_grandparent_dir = current_dir.parent.parent
+
+        # List the contents of the grand-grandparent directory
+        contents = list(grand_grandparent_dir.iterdir())
+
+        st.info(contents)
+
+        # Print the contents
+        for item in contents:
+            print(item)
+
+
     @property
     def transcript(self):
         if self._transcript:
