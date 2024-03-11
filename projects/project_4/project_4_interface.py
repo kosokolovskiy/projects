@@ -19,7 +19,7 @@ def process_video(url, video_name, language):
     st.info('HERE')
     st.session_state['prepared_audio'].pipeline()
     st.info(st.session_state['prepared_audio'].transcript)
-    st.info(st.session_state['prepared_audio'])
+    st.info(st.session_state['prepared_audio'].__dict__())
     return st.session_state.prepared_audio.transcript
 
 # @st.cache_data(persist='disk', show_spinner=True)
