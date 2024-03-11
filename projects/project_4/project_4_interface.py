@@ -84,9 +84,10 @@ def main_4():
         st.session_state.language = language
 
 
-        if video_name and language:
-            get_trascript_widget(url)
-            get_summary(url)
+        
+        # if video_name and language:
+        #     get_trascript_widget(url)
+        #     get_summary(url)
 
         
 
