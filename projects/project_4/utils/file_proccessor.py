@@ -35,7 +35,7 @@ class File_Proccessor:
         # st.info(self.where_to_store_audio)
         self.temp_dir = Path('/mount/src/projects')
         print(list(self.temp_dir.iterdir()))
-        self.info(list(self.temp_dir.iterdir()))
+        st.info(list(self.temp_dir.iterdir()))
 
 
 
