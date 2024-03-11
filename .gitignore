@@ -14,6 +14,7 @@ projects/project_2/data
 projects/project_2/jupyter
 utils/export_credentials.sh
 projects/project_3/jupyter
+projects/project_4/utils/aws/cdk_
 
 
 # C extensions
