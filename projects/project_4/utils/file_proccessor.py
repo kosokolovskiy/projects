@@ -32,7 +32,7 @@ class File_Proccessor:
         self.extension_audio = 'mp3'
         self.where_to_store_video = f'{self.app_name}/{self.unique_video_id}/videos/{self.video_name}.{self.extension_video}'
         self.where_to_store_audio = f'{self.app_name}/{self.unique_video_id}/audios/{self.video_name}.{self.extension_audio}'
-        st.info(self.where_to_store_audio)
+        # st.info(self.where_to_store_audio)
 
 
     @property

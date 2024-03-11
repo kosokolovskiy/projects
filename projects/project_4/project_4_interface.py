@@ -17,8 +17,9 @@ def process_video(url, video_name, language):
         st.session_state['prepared_audio'] = File_Proccessor(url, video_name, language)
     
     st.session_state['prepared_audio'].pipeline()
-    st.info(st.session_state['prepared_audio'].transcript)
-    st.info(st.session_state['prepared_audio'].__dict__())
+    st.info(st.session_state['prepared_audio'].unique_video_id)
+    # st.info(st.session_state['prepared_audio'].transcript)
+    # st.info(st.session_state['prepared_audio'].__dict__())
     return st.session_state.prepared_audio.transcript
 
 # @st.cache_data(persist='disk', show_spinner=True)
