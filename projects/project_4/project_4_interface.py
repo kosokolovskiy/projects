@@ -11,12 +11,6 @@ LANGUAGES_D = {
             'Deutsch': 'de'
         }
 
-@st.cache(show_spinner=True)
-def cached_video_check(url):
-    return check_youtube_video_exists(url)
-
-# Assuming File_Processor and Summarizer are classes you've defined for handling the download, transcription, and summarization.
-# @st.cache(allow_output_mutation=True, show_spinner=True, hash_funcs={"File_Processor": id, "Summarizer": id})
 @st.cache_data(persist='disk', show_spinner=True)
 def process_video(url, video_name, language):
     obj = File_Proccessor(url, video_name, language)
@@ -24,7 +18,6 @@ def process_video(url, video_name, language):
     st.info(obj.transcript)
     return obj.transcript
 
-# @st.cache(allow_output_mutation=True, show_spinner=True, hash_funcs={"Summarizer": id})
 @st.cache_data(persist='disk', show_spinner=True)
 def summarize_video(url, video_name):
     obj = Summarizer(extract_video_id(url), video_name)
