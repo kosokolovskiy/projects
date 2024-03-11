@@ -118,14 +118,18 @@ def main_4():
         language = st.selectbox(label='Choose the language of the video:', options=list(LANGUAGES_D.keys()), index=None)
         st.session_state.language = language
 
-        if video_name and language:
-            obj = process_video(url, video_name, LANGUAGES_D[language])
-            with st.expander('Transcript Text'):
-                st.markdown(obj.transcript)
-                st.download_button(label="Download Text",
-                                   data=obj.transcript,
-                                   file_name=f"transcript_{obj.video_name}.txt",
-                                   mime="text/plain")
+        try:
+            if video_name and language:
+                obj = process_video(url, video_name, LANGUAGES_D[language])
+                with st.expander('Transcript Text'):
+                    st.markdown(obj.transcript)
+                    st.download_button(label="Download Text",
+                                    data=obj.transcript,
+                                    file_name=f"transcript_{obj.video_name}.txt",
+                                    mime="text/plain")
+        except Exception as e:
+            print(e)
+            st.error('Please, try later')
 
             # If summarization is needed
             # obj_summary = summarize_video(url, video_name)
