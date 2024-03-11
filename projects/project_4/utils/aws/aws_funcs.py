@@ -33,10 +33,8 @@ def upload_to_s3(file_path, object_path, deletion_time=120):
 
 
 
-
-
 def folder_exists_in_s3(folder_prefix):
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_PROJECTS, aws_secret_access_key=AWS_SECRET_KEY_PROJECTS)
     
     if not folder_prefix.endswith('/'):
         folder_prefix += '/'
@@ -46,12 +44,12 @@ def folder_exists_in_s3(folder_prefix):
     return 'Contents' in response
 
 def check_file_exists_s3(object_name):
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_PROJECTS, aws_secret_access_key=AWS_SECRET_KEY_PROJECTS)
     try:
         s3_client.head_object(Bucket=S3_BUCKET_NAME_PROJECTS, Key=object_name)
-        return True  # The file exists
+        return True  
     except s3_client.exceptions.ClientError as e:
-        return False  # The file does not exist
+        return False 
 
 
 def download_from_s3(object_path, file_path):
