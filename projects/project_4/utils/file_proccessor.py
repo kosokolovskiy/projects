@@ -34,6 +34,7 @@ class File_Proccessor:
         self.where_to_store_audio = f'{self.app_name}/{self.unique_video_id}/audios/{self.video_name}.{self.extension_audio}'
         # st.info(self.where_to_store_audio)
         self.temp_dir = Path('/mount/src/projects')
+        print(list(self.temp_dir.iterdir()))
         self.info(list(self.temp_dir.iterdir()))
 
 
