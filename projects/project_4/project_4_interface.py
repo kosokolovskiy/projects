@@ -4,6 +4,7 @@ import numpy as np
 from projects.project_4.utils.validation_youtube_video import check_youtube_video_exists, extract_video_id
 from projects.project_4.utils.file_proccessor import File_Proccessor
 from projects.project_4.utils.summarazier import Summarizer
+from pathlib import Path
 
 
 LANGUAGES_D = {
@@ -20,6 +21,7 @@ def process_video(url, video_name, language):
     st.info(st.session_state['prepared_audio'].unique_video_id)
     # st.info(st.session_state['prepared_audio'].transcript)
     # st.info(st.session_state['prepared_audio'].__dict__())
+    st.info(Path.cwd())
     return st.session_state.prepared_audio.transcript
 
 # @st.cache_data(persist='disk', show_spinner=True)
