@@ -109,7 +109,7 @@ def main_4():
         st.session_state['video_name'] = video_name
 
 
-        language = st.selectbox(label='Choose the language of the video:', options=list(LANGUAGES_D.keys()), index=None)
+        language = st.selectbox(label='Choose the language of the video:', options=LANGUAGES_D.keys(), index=None)
         st.session_state.language = language
 
         try:
