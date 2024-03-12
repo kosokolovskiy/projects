@@ -30,8 +30,8 @@ class File_Proccessor:
 
         self.extension_video = 'mp4'
         self.extension_audio = 'mp3'
-        self.where_to_store_video = f'{self.app_name}/{self.unique_video_id}/videos/{self.video_name}.{self.extension_video}'
-        self.where_to_store_audio = f'{self.app_name}/{self.unique_video_id}/audios/{self.video_name}.{self.extension_audio}'
+        self.where_to_store_video = f'{self.app_name}/{self.unique_video_id}/videos/{self.unique_video_id}.{self.extension_video}'
+        self.where_to_store_audio = f'{self.app_name}/{self.unique_video_id}/audios/{self.unique_video_id}.{self.extension_audio}'
         # st.info(self.where_to_store_audio)
         self.temp_dir = Path('/tmp')
         self.temp_dir.mkdir(exist_ok=True)
@@ -74,8 +74,8 @@ class File_Proccessor:
         tmp_dir = self.temp_dir / self.unique_video_id 
         tmp_dir.mkdir(exist_ok=True)
 
-        video_local_path = tmp_dir / f"{self.video_name}.{self.extension_video}"
-        audio_local_path = tmp_dir / f"{self.video_name}.{self.extension_audio}"
+        video_local_path = tmp_dir / f"{self.unique_video_id}.{self.extension_video}"
+        audio_local_path = tmp_dir / f"{self.unique_video_id}.{self.extension_audio}"
 
         try:
             if not video_local_path.exists():
@@ -101,7 +101,7 @@ class File_Proccessor:
         
     def segment_and_transcribe_audio(self):
         tmp_dir = self.temp_dir / self.unique_video_id 
-        full_audio_local_path = tmp_dir / f"{self.video_name}.{self.extension_audio}"
+        full_audio_local_path = tmp_dir / f"{self.unique_video_id}.{self.extension_audio}"
 
         try:
             if not full_audio_local_path.exists():
@@ -115,18 +115,18 @@ class File_Proccessor:
                 part_end = part_start + part_length
                 part = audio[part_start:part_end]
 
-                part_filename = tmp_dir / f'audio_{self.video_name}_part_{i}.mp3'
+                part_filename = tmp_dir / f'audio_{self.unique_video_id}_part_{i}.mp3'
                 if not part_filename.exists():
                     part.export(part_filename, format='mp3')
 
-                part_s3_path = f'{self.app_name}/{self.unique_video_id}/audios/parts/audio_{self.video_name}_part_{i}.mp3'
+                part_s3_path = f'{self.app_name}/{self.unique_video_id}/audios/parts/audio_{self.unique_video_id}_part_{i}.mp3'
                 if not check_file_exists_s3(part_s3_path):
                     upload_to_s3(str(part_filename), part_s3_path)
                 else:
                     print(f'{part_s3_path} already exists in S3')
 
-                transcription_local_path = tmp_dir / f'text_{self.video_name}_part_{i}.txt'
-                transcription_s3_path = f'{self.app_name}/{self.unique_video_id}/texts/parts/text_{self.video_name}_part_{i}.txt'
+                transcription_local_path = tmp_dir / f'text_{self.unique_video_id}_part_{i}.txt'
+                transcription_s3_path = f'{self.app_name}/{self.unique_video_id}/texts/parts/text_{self.unique_video_id}_part_{i}.txt'
 
                 if check_file_exists_s3(transcription_s3_path):
                     print('Transcription already exists in S3')
@@ -158,20 +158,20 @@ class File_Proccessor:
             print(files)
             for one_file in sorted(files):
                 if '.txt' in one_file and 'part' in one_file:
-                    path_to_part =  tmp_dir / f'text_{self.video_name}_part_{count}.txt'
+                    path_to_part =  tmp_dir / f'text_{self.unique_video_id}_part_{count}.txt'
                     with open(path_to_part, 'r') as file:
                         temp = file.readline()
                     mode = 'w' if count == 1 else 'a'
-                    with open(str(tmp_dir / f'{self.video_name}_full.txt'), mode) as file:
+                    with open(str(tmp_dir / f'{self.unique_video_id}_full.txt'), mode) as file:
                         file.write(temp)
                         self._transcript += temp
                     count += 1
 
-        transcription_s3_path_full = f'{self.app_name}/{self.unique_video_id}/texts/text_{self.video_name}_full.txt'
+        transcription_s3_path_full = f'{self.app_name}/{self.unique_video_id}/texts/text_{self.unique_video_id}_full.txt'
         if check_file_exists_s3(transcription_s3_path_full):
             print('Full Transcript is already on S3')
         else:
-            upload_to_s3(str(tmp_dir / f'{self.video_name}_full.txt'), transcription_s3_path_full)
+            upload_to_s3(str(tmp_dir / f'{self.unique_video_id}_full.txt'), transcription_s3_path_full)
 
     def print_text_while_waiting_for_transcription(self, text, stop_event):
         while not stop_event.is_set():
