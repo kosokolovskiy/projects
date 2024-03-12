@@ -42,6 +42,7 @@ class File_Proccessor:
 
     @property
     def transcript(self):
+        print('INSIDE PROPERTY')
         if self._transcript:
             st.markdown(self._transcript)
             return self._transcript
@@ -130,7 +131,8 @@ class File_Proccessor:
                 transcription_s3_path = f'{self.app_name}/{self.unique_video_id}/texts/parts/text_{self.video_name}_part_{i}.txt'
 
                 if check_file_exists_s3(transcription_s3_path):
-                    print('Transcription already exists')
+                    print('Transcription already exists in S3')
+                    download_from_s3(transcription_s3_path, transcription_local_path)
 
                 elif transcript_text := asyncio.run(
                         self.get_transcript(
@@ -154,6 +156,7 @@ class File_Proccessor:
         tmp_dir = self.temp_dir / self.unique_video_id 
         count = 1
         for _, _, files in os.walk(tmp_dir.__str__()):
+            print(files)
             for one_file in sorted(files):
                 if '.txt' in one_file and 'part' in one_file:
                     path_to_part =  tmp_dir / f'text_{self.video_name}_part_{count}.txt'
