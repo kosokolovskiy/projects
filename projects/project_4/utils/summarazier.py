@@ -12,11 +12,11 @@ class Summarizer:
         self.app_name = 'summarizer_app'
 
         self.tmp_dir = Path(f'/tmp/{self.video_id}')
-        self.local_path_to_transcription = self.tmp_dir / f'{self.video_name}_full.txt'
-        self.local_path_to_summary_openai = self.tmp_dir / 'summary_{self.video_name}_openai.txt'
+        self.local_path_to_transcription = self.tmp_dir / f'{self.video_id}_full.txt'
+        self.local_path_to_summary_openai = self.tmp_dir / 'summary_{self.video_id}_openai.txt'
 
-        self.path_in_s3_transcription = Path(f'{self.app_name}/{self.video_id}/texts/text_{self.video_name}_full.txt')
-        self.path_in_s3_summary_openai = Path(f'{self.app_name}/{self.video_id}/summary/summary_{self.video_name}_openai.txt')
+        self.path_in_s3_transcription = Path(f'{self.app_name}/{self.video_id}/texts/text_{self.video_id}_full.txt')
+        self.path_in_s3_summary_openai = Path(f'{self.app_name}/{self.video_id}/summary/summary_{self.video_id}_openai.txt')
 
         self.prompt = lambda x: f'Summarize the following text with only important information left:\n\n\n {x}'
 
