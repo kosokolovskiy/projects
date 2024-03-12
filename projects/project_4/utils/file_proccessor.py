@@ -71,7 +71,6 @@ class File_Proccessor:
 
     def video_to_audio(self):  # sourcery skip: extract-method
 
-        # tmp_dir = Path(f'/tmp/{self.unique_video_id}')
         tmp_dir = self.temp_dir / self.unique_video_id 
         tmp_dir.mkdir(exist_ok=True)
 
@@ -101,7 +100,6 @@ class File_Proccessor:
 
         
     def segment_and_transcribe_audio(self):
-        # tmp_dir = Path(f'/tmp/{self.unique_video_id}')
         tmp_dir = self.temp_dir / self.unique_video_id 
         full_audio_local_path = tmp_dir / f"{self.video_name}.{self.extension_audio}"
 
@@ -152,7 +150,6 @@ class File_Proccessor:
             print(f"Error during processing: {e}")
 
     def combine_transcription_parts(self):
-        # tmp_dir = Path(f'/tmp/{self.unique_video_id}')
         tmp_dir = self.temp_dir / self.unique_video_id 
         count = 1
         for _, _, files in os.walk(tmp_dir.__str__()):

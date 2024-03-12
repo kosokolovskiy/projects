@@ -1,10 +1,8 @@
-# import spacy
 from pathlib import Path
 from openai import OpenAI
 import streamlit as st
 from projects.project_4.utils.aws.aws_funcs import upload_to_s3, folder_exists_in_s3, check_file_exists_s3, download_from_s3
 
-# nlp = spacy.load("de_core_news_sm")
 BUCKET_NAME = st.secrets['S3_BUCKET_NAME_PROJECTS']
 
 class Summarizer:
@@ -63,6 +61,3 @@ class Summarizer:
 if __name__ == '__main__':
     obj = Summarizer('S_auwUqRcPI', 'DB_Streik_test_short')
     obj.summarizer_open_ai()
-    
-
-
