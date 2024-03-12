@@ -76,13 +76,13 @@ def main_4():
                                     file_name=f"transcript_{transcription_obj.video_name}.txt",
                                     mime="text/plain")
 
-                obj_summary = summarize_video(url, video_name)
-                with st.expander('Summary'):
-                    st.markdown(obj_summary.summary_openai)
-                    st.download_button(label="Download Summary",
-                                        data=obj_summary.summary_openai,
-                                        file_name=f"summary_{obj_summary.video_name}.txt",
-                                        mime="text/plain")
+                # obj_summary = summarize_video(url, video_name)
+                # with st.expander('Summary'):
+                #     st.markdown(obj_summary.summary_openai)
+                #     st.download_button(label="Download Summary",
+                #                         data=obj_summary.summary_openai,
+                #                         file_name=f"summary_{obj_summary.video_name}.txt",
+                #                         mime="text/plain")
         except Exception as e:
             print(e)
             st.error('Please, try later')
