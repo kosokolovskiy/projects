@@ -136,7 +136,8 @@ class File_Proccessor:
 
                 elif transcript_text := asyncio.run(
                         self.get_transcript(
-                            str(part_filename), f'Transcribing Part {i}'
+                            # str(part_filename), f'Transcribing Part {i}'
+                            str(part_filename), f'Language: {self.language}'
                         )
                     ):
 
