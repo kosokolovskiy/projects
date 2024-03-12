@@ -32,11 +32,8 @@ class File_Proccessor:
         self.extension_audio = 'mp3'
         self.where_to_store_video = f'{self.app_name}/{self.unique_video_id}/videos/{self.unique_video_id}.{self.extension_video}'
         self.where_to_store_audio = f'{self.app_name}/{self.unique_video_id}/audios/{self.unique_video_id}.{self.extension_audio}'
-        # st.info(self.where_to_store_audio)
         self.temp_dir = Path('/tmp')
         self.temp_dir.mkdir(exist_ok=True)
-        # print(list(self.temp_dir.iterdir()))
-        # st.info(list(self.temp_dir.iterdir()))
 
 
 
@@ -136,8 +133,7 @@ class File_Proccessor:
 
                 elif transcript_text := asyncio.run(
                         self.get_transcript(
-                            # str(part_filename), f'Transcribing Part {i}'
-                            str(part_filename), f'Language: {self.language}'
+                            str(part_filename), f'Transcribing Part {i}'
                         )
                     ):
 
@@ -167,6 +163,7 @@ class File_Proccessor:
                         file.write(temp)
                         self._transcript += temp
                     count += 1
+        print(self._transcript)
 
         transcription_s3_path_full = f'{self.app_name}/{self.unique_video_id}/texts/text_{self.unique_video_id}_full.txt'
         if check_file_exists_s3(transcription_s3_path_full):
