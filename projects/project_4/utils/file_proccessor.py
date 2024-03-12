@@ -194,6 +194,7 @@ class File_Proccessor:
                     transcript = response.text
             except Exception as e:
                 print('ERROR')
+                print(e)
             finally:
                 stop_event.set()
 
