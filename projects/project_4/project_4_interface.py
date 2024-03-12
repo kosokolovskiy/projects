@@ -13,7 +13,7 @@ LANGUAGES_D = {
         }
 
 def process_video(url, video_name, language):
-    obj = File_Proccessor(url, video_name, language)
+    obj = File_Proccessor(url, video_name, LANGUAGES_D[language])
     obj.pipeline()
     return obj
 
