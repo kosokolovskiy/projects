@@ -128,8 +128,6 @@ class File_Proccessor:
                 if check_file_exists_s3(transcription_s3_path):
                     print('Transcription already exists in S3')
                     download_from_s3(transcription_s3_path, transcription_local_path)
-                    with open(transcription_local_path, 'w') as file:
-                        file.write(transcript_text)
 
                 elif transcript_text := asyncio.run(
                         self.get_transcript(
