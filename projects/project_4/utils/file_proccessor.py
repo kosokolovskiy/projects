@@ -39,7 +39,7 @@ class File_Proccessor:
 
     @property
     def transcript(self):
-        print('INSIDE PROPERTY')
+        # print('INSIDE PROPERTY')
         if self._transcript:
             st.markdown(self._transcript)
             return self._transcript
@@ -138,7 +138,7 @@ class File_Proccessor:
                     with open(transcription_local_path, 'w') as file:
                         file.write(transcript_text)
 
-                    print(transcript_text)
+                    # print(transcript_text)
                     upload_to_s3(str(transcription_local_path), transcription_s3_path)
 
             print("Segmentation, transcription, and uploading completed.")
