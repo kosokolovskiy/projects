@@ -158,7 +158,7 @@ class File_Proccessor:
         for _, _, files in os.walk(tmp_dir.__str__()):
             print(files)
             for one_file in sorted(files):
-                if '.txt' in one_file and 'part' in one_file:
+                if '.txt' in one_file and 'part' in one_file and self.unique_video_id in one_file:
                     path_to_part =  tmp_dir / f'text_{self.unique_video_id}_part_{count}.txt'
                     with open(path_to_part, 'r') as file:
                         temp = file.readline()
