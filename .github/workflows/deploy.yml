@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        fetch-depth: 0 # Fetches all history for all branches and tags
+        fetch-depth: 0
     - name: Copy files to EC2
       uses: appleboy/scp-action@master
       with:
@@ -18,7 +18,7 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
         port: ${{ secrets.EC2_PORT }}
-        source: "." # Or specify a subdirectory like "src/"
+        source: "."
         target: "/home/ubuntu"
     - name: Restart Streamlit App
       uses: appleboy/ssh-action@master
