@@ -28,6 +28,6 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: ${{ secrets.EC2_PORT }}
         script: |
-          cd /home/ubuntu/projects 
+          cd /home/ubuntu 
           pkill streamlit
-          nohup streamlit run your_app.py &
+          nohup streamlit run app.py &
