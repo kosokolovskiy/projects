@@ -8,9 +8,15 @@ def main_widget():
     choice = st.selectbox('What do you want to do?', options, index=None, key='options_to_choose')
 
     if choice == options[0]:
-        get_recommendation_main()
+        try:
+            get_recommendation_main()
+        except Exception:
+            st.info('This Feature is not supported yet')
     elif choice == options[1]:
-        rate_movie_main()
+        try:
+            rate_movie_main()
+        except Exception:
+            st.info('This Feature is not supported yet')
 
 
 
