@@ -1,6 +1,6 @@
 import streamlit as st
-from utils.get_recommendation import get_recommendation_main
-from utils.rate_movie import rate_movie_main
+from projects.project_5.utils.get_recommendation import get_recommendation_main
+from projects.project_5.utils.rate_movie import rate_movie_main
 
 def main_widget():
 
